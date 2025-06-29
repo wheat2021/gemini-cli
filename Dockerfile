@@ -5,6 +5,10 @@ ARG CLI_VERSION_ARG
 ENV SANDBOX="$SANDBOX_NAME"
 ENV CLI_VERSION=$CLI_VERSION_ARG
 
+# 清除可能存在的apt代理配置
+RUN echo 'Acquire::http::Proxy "";' > /etc/apt/apt.conf.d/99disable-proxy && \
+    echo 'Acquire::https::Proxy "";' >> /etc/apt/apt.conf.d/99disable-proxy
+
 # install minimal set of packages, then clean up
 RUN apt-get update && apt-get install -y --no-install-recommends \
   python3 \
